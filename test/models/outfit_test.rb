@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class OutfitTest < ActiveSupport::TestCase
+	fixtures :outfits
 	test "outfit attributes must not be empty" do
 		# свойства товара не должны оставаться пустыми
 		outfit = Outfit.new
@@ -49,5 +50,26 @@ class OutfitTest < ActiveSupport::TestCase
 			assert new_outfit(name).invalid?, "#{name} shouldn't be valid"
 			# не должно быть приемлемым
 		end
+	end
+
+	test "outfit is not valid without a unique title" do
+		# если у товара нет уникального названия, то он недопустим
+		outfit = Outfit.new(title: outfits(:ruby).title,
+			description: "yyy",
+			price: 1,
+			image_url: "fred.gif")
+		assert outfit.invalid?
+		assert_equal ["has already been taken"], outfit.errors[:title]
+		# уже было использовано
+	end
+
+	test " outfit is not valid without a unique title - i18n" do
+		outfit = Outfit.new(title: outfits(:ruby).title,
+			description: "yyy",
+			price: 1,
+			image_url: "fred.gif")
+		assert outfit.invalid?
+		assert_equal [I18n.translate('activerecord.errors.messages.taken')],
+		outfit.errors[:title]
 	end
 end
