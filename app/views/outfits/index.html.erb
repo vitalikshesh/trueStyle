@@ -1,0 +1,25 @@
+<h1>Listing products</h1>
+<table>
+<% @outfits.each do |outfit| %>
+<tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+<td>
+<%= image_tag(outfit.image_url, class: 'list_image') %>
+</td>
+<td class="list_description">
+<dl>
+<dt><%= outfit.title %></dt>
+<dd><%= truncate(strip_tags(outfit.description),
+length: 80) %></dd>
+</dl>
+</td>
+<td class="list_actions">
+<%= link_to 'Show', outfit %><br/>
+<%= link_to 'Edit', edit_outfit_path(outfit) %><br/>
+<%= link_to 'Destroy', outfit, method: :delete,
+data: { confirm: 'Are you sure?' } %>
+</td>
+</tr>
+<% end %>
+</table>
+<br />
+<%= link_to 'New product', new_outfit_path %>
