@@ -6,4 +6,8 @@ class Outfit < ApplicationRecord
 		with: %r{\.(gif|jpg|png)\Z}i,
 		message: 'URL должен указывать на изображение формата GIF, JPG или PNG.'
 	}
+
+	def self.latest
+		Outfit.order(:updated_at).last
+	end
 end

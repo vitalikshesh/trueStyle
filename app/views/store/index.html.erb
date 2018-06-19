@@ -1,0 +1,18 @@
+<% if notice %>
+	<p id="notice"><%= notice %></p>
+<% end %>
+<h1>Your Pragmatic Catalog</h1>
+<% cache ['store', Outfit.latest] do %>
+	<% @outfits.each do |outfit| %>
+	<% cache ['entry', outfit] do %>
+		<div class="entry">
+			<%= image_tag(outfit.image_url) %>
+			<h3><%= outfit.title %></h3>
+			<%= sanitize(outfit.description) %>
+			<div class="price_line">
+				<span class="price"><%= number_to_currency(outfit.price, :unit=>'₴ ') %></span>
+			</div>
+		</div>
+	<% end %>
+	<% end %>
+<% end %>
